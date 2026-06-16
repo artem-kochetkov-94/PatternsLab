@@ -1,5 +1,6 @@
 // Публичная "витрина" пакета: всё, что другие проекты импортируют из @patterns-lab/core.
 export type {
+  CodeSample,
   PatternCategory,
   PatternMeta,
   PatternModule,

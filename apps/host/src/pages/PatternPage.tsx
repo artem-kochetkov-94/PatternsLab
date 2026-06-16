@@ -6,6 +6,7 @@ import {
   type PatternModule,
 } from "@patterns-lab/core";
 import { loadPattern } from "../lib/loadPattern";
+import { PatternTabs } from "../components/PatternTabs";
 
 type LoadState =
   | { status: "loading" }
@@ -83,20 +84,7 @@ export function PatternPage() {
           </div>
         )}
 
-        {state.status === "ready" && (
-          <div className="space-y-12">
-            <section>
-              <h2 className="mb-4 text-xl font-semibold text-white">
-                Живое демо
-              </h2>
-              <state.module.Demo />
-            </section>
-            <section>
-              <h2 className="mb-4 text-xl font-semibold text-white">Разбор</h2>
-              <state.module.Explanation />
-            </section>
-          </div>
-        )}
+        {state.status === "ready" && <PatternTabs module={state.module} />}
       </div>
     </div>
   );
