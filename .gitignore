@@ -1,0 +1,34 @@
+# личные инструкции для Claude (не коммитим)
+CLAUDE.md
+
+# зависимости
+node_modules/
+.pnpm-store/
+
+# сборка
+dist/
+build/
+*.tsbuildinfo
+
+# кэш инструментов
+.turbo/
+.vite/
+.cache/
+
+# логи
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# окружение
+.env
+.env.local
+.env.*.local
+
+# редакторы / ОС
+.DS_Store
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
