@@ -1,9 +1,45 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { categoryLabels, getPatternById } from "@patterns-lab/core";
+import {
+  categoryLabels,
+  getPatternById,
+  type PatternModule,
+} from "@patterns-lab/core";
+import { loadPattern } from "../lib/loadPattern";
+
+type LoadState =
+  | { status: "loading" }
+  | { status: "error"; message: string }
+  | { status: "ready"; module: PatternModule };
 
 export function PatternPage() {
   const { id } = useParams<{ id: string }>();
   const entry = id ? getPatternById(id) : undefined;
+
+  const [state, setState] = useState<LoadState>({ status: "loading" });
+
+  useEffect(() => {
+    if (!entry) return;
+    let cancelled = false;
+
+    setState({ status: "loading" });
+    loadPattern(entry)
+      .then((module) => {
+        if (!cancelled) setState({ status: "ready", module });
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setState({
+            status: "error",
+            message: error instanceof Error ? error.message : String(error),
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [entry]);
 
   if (!entry) {
     return (
@@ -30,13 +66,37 @@ export function PatternPage() {
       <h1 className="mt-1 text-3xl font-bold text-white">{meta.title}</h1>
       <p className="mt-2 max-w-2xl text-slate-400">{meta.summary}</p>
 
-      {/* Сюда на Шаге 4 будет подгружаться live-demo из remote-микрофронтенда. */}
-      <div className="mt-10 rounded-lg border border-dashed border-slate-700 bg-slate-900 p-10 text-center text-slate-500">
-        Здесь появится live-demo паттерна
-        <br />
-        <span className="text-xs">
-          (подключим через Module Federation на следующем шаге)
-        </span>
+      <div className="mt-10">
+        {state.status === "loading" && (
+          <div className="rounded-lg border border-slate-700 bg-slate-900 p-10 text-center text-slate-500">
+            Загружаем микрофронтенд…
+          </div>
+        )}
+
+        {state.status === "error" && (
+          <div className="rounded-lg border border-red-900 bg-red-950/40 p-6 text-red-300">
+            <p className="font-semibold">Не удалось загрузить демо</p>
+            <p className="mt-1 text-sm text-red-400">{state.message}</p>
+            <p className="mt-3 text-xs text-red-400/70">
+              Запущен ли remote «{entry.remote}» на своём порту?
+            </p>
+          </div>
+        )}
+
+        {state.status === "ready" && (
+          <div className="space-y-12">
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-white">
+                Живое демо
+              </h2>
+              <state.module.Demo />
+            </section>
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-white">Разбор</h2>
+              <state.module.Explanation />
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );

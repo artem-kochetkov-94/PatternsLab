@@ -15,6 +15,11 @@ build/
 .vite/
 .cache/
 
+# сгенерированные типы и артефакты Module Federation
+@mf-types/
+.mf-types/
+.mf/
+
 # логи
 *.log
 npm-debug.log*

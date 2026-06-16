@@ -1,5 +1,5 @@
 {
-  "name": "@patterns-lab/host",
+  "name": "@patterns-lab/behavioral",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,11 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@module-federation/runtime": "^0.20.0",
     "@patterns-lab/core": "workspace:*",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.0.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@module-federation/vite": "^1.4.0",
