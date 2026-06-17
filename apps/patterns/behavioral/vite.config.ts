@@ -16,6 +16,8 @@ export default defineConfig({
       // что отдаём наружу: ключ — публичное имя, значение — путь в коде
       exposes: {
         "./Observer": "./src/patterns/observer/index.ts",
+        "./ChainOfResponsibility":
+          "./src/patterns/chain-of-responsibility/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {

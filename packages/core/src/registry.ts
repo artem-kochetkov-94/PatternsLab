@@ -30,6 +30,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "behavioral",
     exposedModule: "./Observer",
   },
+  {
+    meta: {
+      id: "chain-of-responsibility",
+      title: "Chain of Responsibility",
+      category: "behavioral",
+      summary:
+        "Запрос идёт по цепочке обработчиков, пока один из них его не обработает.",
+    },
+    remote: "behavioral",
+    exposedModule: "./ChainOfResponsibility",
+  },
 ];
 
 /** Человекочитаемые названия категорий — для заголовков в меню. */
