@@ -18,6 +18,7 @@ export default defineConfig({
         "./Observer": "./src/patterns/observer/index.ts",
         "./ChainOfResponsibility":
           "./src/patterns/chain-of-responsibility/index.ts",
+        "./Command": "./src/patterns/command/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {

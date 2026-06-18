@@ -41,6 +41,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "behavioral",
     exposedModule: "./ChainOfResponsibility",
   },
+  {
+    meta: {
+      id: "command",
+      title: "Command",
+      category: "behavioral",
+      summary:
+        "Превращает действие в объект — его можно отменить, поставить в очередь и логировать.",
+    },
+    remote: "behavioral",
+    exposedModule: "./Command",
+  },
 ];
 
 /** Человекочитаемые названия категорий — для заголовков в меню. */
