@@ -18,6 +18,7 @@
 - **Module Federation** (`@module-federation/vite`) — загрузка микрофронтендов в рантайме
 - **React Router** — навигация в host-оболочке
 - **TailwindCSS** — стили
+- **Framer Motion** — пошаговые анимации в визуализациях алгоритмов
 - **prism-react-renderer** — подсветка синтаксиса в просмотрщике кода
 - **pnpm workspaces** + **Turborepo** — монорепозиторий
 
@@ -43,7 +44,7 @@
 - Каждый **remote** — самостоятельное приложение: его можно запустить и открыть отдельно
   (автономный режим), и он же отдаёт свои паттерны наружу для host.
 - Гранулярность: **один remote на категорию** паттернов
-  (порождающие / структурные / поведенческие / архитектурные). Внутри каждый паттерн —
+  (порождающие / структурные / поведенческие / архитектурные / алгоритмические). Внутри каждый паттерн —
   изолированный модуль с единым контрактом `PatternModule`
   (`meta` + `Demo` + `Explanation` + `code`).
 - На странице паттерна host показывает три **вкладки**: «Разбор» (теория), «Демо»
@@ -57,8 +58,10 @@ PatternsLab/
 ├── apps/
 │   ├── host/                     # host-оболочка (:3000)
 │   └── patterns/
-│       └── behavioral/           # remote с поведенческими паттернами (:3001)
-│           └── src/patterns/observer/   # Observer: логика + Demo + Explanation
+│       ├── behavioral/           # remote с поведенческими паттернами (:3001)
+│       │   └── src/patterns/observer/   # Observer: логика + Demo + Explanation
+│       └── algorithmic/          # remote с алгоритмическими приёмами (:3002)
+│           └── src/patterns/two-pointers/  # Два указателя: трейсер + визуализация
 ├── packages/
 │   └── core/                     # контракты (PatternMeta, PatternModule) и реестр
 ├── pnpm-workspace.yaml
@@ -85,6 +88,7 @@ pnpm dev
 
 - host — http://localhost:3000
 - remote `behavioral` (автономный режим) — http://localhost:3001
+- remote `algorithmic` (автономный режим) — http://localhost:3002
 
 Для корректной загрузки паттернов в host соответствующий remote должен быть запущен.
 
@@ -93,6 +97,7 @@ pnpm dev
 ```bash
 pnpm --filter @patterns-lab/host dev
 pnpm --filter @patterns-lab/behavioral dev
+pnpm --filter @patterns-lab/algorithmic dev
 ```
 
 ## Скрипты
@@ -121,6 +126,7 @@ Host подхватит паттерн автоматически — отдел
 - [x] Каркас монорепо, контракты и host-оболочка
 - [x] Module Federation: первый паттерн **Observer** (категория behavioral)
 - [x] Страница паттерна с вкладками «Разбор / Демо / Код» и подсветкой исходников
+- [x] Секция алгоритмических приёмов: **Два указателя** (Squares of a Sorted Array) с пошаговой визуализацией
 - [ ] Остальные поведенческие паттерны (Strategy, Command, State, …)
 - [ ] Категории creational / structural / architectural
 - [ ] Дизайн-система в `packages/ui`

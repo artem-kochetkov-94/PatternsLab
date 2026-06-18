@@ -52,15 +52,36 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "behavioral",
     exposedModule: "./Command",
   },
+  {
+    meta: {
+      id: "two-pointers",
+      title: "Два указателя",
+      category: "algorithmic",
+      summary:
+        "Два индекса идут по массиву навстречу друг другу — решает задачу за один проход без вложенных циклов.",
+    },
+    remote: "algorithmic",
+    exposedModule: "./TwoPointers",
+  },
 ];
 
-/** Человекочитаемые названия категорий — для заголовков в меню. */
-export const categoryLabels: Record<PatternCategory, string> = {
-  creational: "Порождающие",
-  structural: "Структурные",
-  behavioral: "Поведенческие",
-  architectural: "Архитектурные",
-};
+/**
+ * Единственный источник правды по категориям: их порядок и названия.
+ * Меню, каталог и заголовки берут данные отсюда — добавить категорию
+ * = дописать одну строку сюда (и больше нигде).
+ */
+export const categoryOrder: { id: PatternCategory; label: string }[] = [
+  { id: "creational", label: "Порождающие" },
+  { id: "structural", label: "Структурные" },
+  { id: "behavioral", label: "Поведенческие" },
+  { id: "architectural", label: "Архитектурные" },
+  { id: "algorithmic", label: "Алгоритмические приёмы" },
+];
+
+/** Человекочитаемые названия категорий — для быстрого поиска по id. */
+export const categoryLabels = Object.fromEntries(
+  categoryOrder.map((c) => [c.id, c.label]),
+) as Record<PatternCategory, string>;
 
 /** Найти запись паттерна по его id. */
 export function getPatternById(id: string): PatternRegistryEntry | undefined {

@@ -9,6 +9,7 @@ export type {
 export type { PatternRegistryEntry } from "./registry";
 export {
   patternRegistry,
+  categoryOrder,
   categoryLabels,
   getPatternById,
   getPatternsByCategory,

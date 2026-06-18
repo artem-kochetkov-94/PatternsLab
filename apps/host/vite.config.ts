@@ -18,6 +18,11 @@ export default defineConfig({
           name: "behavioral",
           entry: "http://localhost:3001/remoteEntry.js",
         },
+        algorithmic: {
+          type: "module",
+          name: "algorithmic",
+          entry: "http://localhost:3002/remoteEntry.js",
+        },
       },
       shared: {
         react: { singleton: true },

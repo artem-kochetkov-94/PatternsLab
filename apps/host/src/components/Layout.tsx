@@ -1,16 +1,5 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import {
-  categoryLabels,
-  getPatternsByCategory,
-  type PatternCategory,
-} from "@patterns-lab/core";
-
-const categories: PatternCategory[] = [
-  "creational",
-  "structural",
-  "behavioral",
-  "architectural",
-];
+import { categoryOrder, getPatternsByCategory } from "@patterns-lab/core";
 
 export function Layout() {
   return (
@@ -26,12 +15,12 @@ export function Layout() {
           </p>
 
           <nav className="mt-8 space-y-6">
-            {categories.map((category) => {
-              const patterns = getPatternsByCategory(category);
+            {categoryOrder.map(({ id, label }) => {
+              const patterns = getPatternsByCategory(id);
               return (
-                <div key={category}>
+                <div key={id}>
                   <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                    {categoryLabels[category]}
+                    {label}
                   </h2>
                   {patterns.length === 0 ? (
                     <p className="text-sm text-slate-600">— пока пусто</p>

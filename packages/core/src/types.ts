@@ -8,7 +8,8 @@ export type PatternCategory =
   | "creational" // порождающие
   | "structural" // структурные
   | "behavioral" // поведенческие
-  | "architectural"; // архитектурные подходы
+  | "architectural" // архитектурные подходы
+  | "algorithmic"; // алгоритмические приёмы
 
 /**
  * Описание паттерна как ДАННЫЕ (без React-компонентов).

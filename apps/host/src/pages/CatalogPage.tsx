@@ -1,16 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  categoryLabels,
-  getPatternsByCategory,
-  type PatternCategory,
-} from "@patterns-lab/core";
-
-const categories: PatternCategory[] = [
-  "creational",
-  "structural",
-  "behavioral",
-  "architectural",
-];
+import { categoryOrder, getPatternsByCategory } from "@patterns-lab/core";
 
 export function CatalogPage() {
   return (
@@ -22,14 +11,14 @@ export function CatalogPage() {
       </p>
 
       <div className="mt-10 space-y-12">
-        {categories.map((category) => {
-          const patterns = getPatternsByCategory(category);
+        {categoryOrder.map(({ id, label }) => {
+          const patterns = getPatternsByCategory(id);
           if (patterns.length === 0) return null;
 
           return (
-            <section key={category}>
+            <section key={id}>
               <h2 className="mb-4 text-xl font-semibold text-white">
-                {categoryLabels[category]}
+                {label}
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {patterns.map((entry) => (
