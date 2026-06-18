@@ -3,9 +3,14 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { federation } from "@module-federation/vite";
 
+// На GitHub Pages этот remote лежит в подпапке /PatternsLab/behavioral/,
+// поэтому его статика (remoteEntry.js и чанки) должна ссылаться туда же.
+const isPages = process.env.DEPLOY_TARGET === "pages";
+
 // Remote-приложение "behavioral": содержит поведенческие паттерны
 // и отдаёт их наружу через Module Federation.
 export default defineConfig({
+  base: isPages ? "/PatternsLab/behavioral/" : "/",
   plugins: [
     react(),
     tailwindcss(),

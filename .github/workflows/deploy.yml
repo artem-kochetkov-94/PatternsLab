@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+# Деплой при пуше в main и по кнопке "Run workflow".
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Права, нужные официальному деплою на Pages через OIDC.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Параллельные деплои не нужны — отменяем предыдущий незавершённый.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # pnpm ставим ДО setup-node, чтобы заработал кэш pnpm.
+      # Версия берётся из поля packageManager в package.json.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Сборка всех приложений в режиме Pages (см. vite.config каждого).
+      - run: pnpm build
+        env:
+          DEPLOY_TARGET: pages
+
+      # Собираем единый сайт: host в корень, remote-ы в подпапки.
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r apps/host/dist/. _site/
+          mkdir -p _site/behavioral _site/algorithmic
+          cp -r apps/patterns/behavioral/dist/. _site/behavioral/
+          cp -r apps/patterns/algorithmic/dist/. _site/algorithmic/
+          # SPA-fallback: на прямой переход вглубь Pages отдаёт 404.html,
+          # копия index.html поднимает приложение и роутер сам отрисует путь.
+          cp _site/index.html _site/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
