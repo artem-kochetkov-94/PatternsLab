@@ -54,6 +54,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
   },
   {
     meta: {
+      id: "iterator",
+      title: "Iterator",
+      category: "behavioral",
+      summary:
+        "Даёт единый способ перебирать элементы коллекции, не раскрывая её внутреннее устройство.",
+    },
+    remote: "behavioral",
+    exposedModule: "./Iterator",
+  },
+  {
+    meta: {
       id: "two-pointers",
       title: "Два указателя",
       category: "algorithmic",

@@ -24,6 +24,7 @@ export default defineConfig({
         "./ChainOfResponsibility":
           "./src/patterns/chain-of-responsibility/index.ts",
         "./Command": "./src/patterns/command/index.ts",
+        "./Iterator": "./src/patterns/iterator/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {
