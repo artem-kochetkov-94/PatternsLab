@@ -1,5 +1,6 @@
-# личные инструкции для Claude (не коммитим)
+# личные инструкции и настройки Claude (не коммитим)
 CLAUDE.md
+.claude/settings.local.json
 
 # зависимости
 node_modules/

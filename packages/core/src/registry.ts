@@ -85,6 +85,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "algorithmic",
     exposedModule: "./Intervals",
   },
+  {
+    meta: {
+      id: "prefix-sum",
+      title: "Префиксные суммы",
+      category: "algorithmic",
+      summary:
+        "Предподсчёт накопленных сумм: сумма любого прямоугольника матрицы — за O(1) по формуле включений-исключений.",
+    },
+    remote: "algorithmic",
+    exposedModule: "./PrefixSum",
+  },
 ];
 
 /**
