@@ -118,6 +118,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "algorithmic",
     exposedModule: "./Stack",
   },
+  {
+    meta: {
+      id: "merge-sort",
+      title: "Сортировка слиянием",
+      category: "algorithmic",
+      summary:
+        "«Разделяй и властвуй»: массив рекурсивно делится пополам, а затем отсортированные половины сливаются за один проход — гарантированные O(n·log n).",
+    },
+    remote: "algorithmic",
+    exposedModule: "./MergeSort",
+  },
 ];
 
 /**

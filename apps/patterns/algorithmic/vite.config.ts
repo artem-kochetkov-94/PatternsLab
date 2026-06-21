@@ -26,6 +26,7 @@ export default defineConfig({
         "./PrefixSum": "./src/patterns/prefix-sum/index.ts",
         "./BinarySearch": "./src/patterns/binary-search/index.ts",
         "./Stack": "./src/patterns/stack/index.ts",
+        "./MergeSort": "./src/patterns/merge-sort/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {
