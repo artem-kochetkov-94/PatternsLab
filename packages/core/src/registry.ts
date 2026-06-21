@@ -113,7 +113,7 @@ export const patternRegistry: PatternRegistryEntry[] = [
       title: "Стек",
       category: "algorithmic",
       summary:
-        "LIFO-структура для задач на вложенность: открытые «(» ждут пару на стеке — удаляем минимум скобок для валидности за один проход O(n).",
+        "LIFO-структура: на стеке решаем парность скобок (минимум удалений, LC 1249) и «следующий тёплый день» через монотонный стек (LC 739) — за один проход O(n).",
     },
     remote: "algorithmic",
     exposedModule: "./Stack",

@@ -10,12 +10,14 @@ import { Explanation } from "./Explanation";
 // `?raw` — фишка Vite: импортирует файл как СТРОКУ с его содержимым.
 import solutionSource from "./solution.ts?raw";
 import stackSource from "./stack.ts?raw";
-import visualizerSource from "./StackVisualizer.tsx?raw";
+import dailyTempSource from "./dailyTemperatures.ts?raw";
+import dailyTempTraceSource from "./dailyTemperaturesTrace.ts?raw";
 import demoSource from "./Demo.tsx?raw";
 
 /**
  * "Разъём" (PatternModule), который host получит через Module Federation.
- * Именно этот файл указан в exposes vite.config.
+ * Именно этот файл указан в exposes vite.config. В демо — две задачи на стек
+ * (переключатель): парность скобок (LC 1249) и монотонный стек (LC 739).
  */
 const stack: PatternModule = {
   meta: {
@@ -23,31 +25,37 @@ const stack: PatternModule = {
     title: "Стек",
     category: "algorithmic",
     summary:
-      "LIFO-структура для задач на вложенность: открытые «(» ждут пару на стеке — удаляем минимум скобок для валидности за один проход O(n).",
+      "LIFO-структура: на стеке решаем парность скобок (минимум удалений, LC 1249) и «следующий тёплый день» через монотонный стек (LC 739) — за один проход O(n).",
   },
   Demo,
   Explanation,
   code: [
     {
-      // Чистый алгоритм без обвязки под визуализацию — то, что пишут в проде.
+      // Задача 1, чистый «боевой» алгоритм — то, что пишут в проде.
       filename: "solution.ts",
       language: "typescript",
       source: solutionSource,
     },
     {
-      // Тот же приём с записью каждого шага для пошагового плеера.
+      // Задача 2, монотонный стек — чистый вариант.
+      filename: "dailyTemperatures.ts",
+      language: "typescript",
+      source: dailyTempSource,
+    },
+    {
+      // Задача 1 с записью каждого шага для пошагового плеера.
       filename: "stack.ts",
       language: "typescript",
       source: stackSource,
     },
     {
-      // Отрисовка одного кадра визуализации (Framer Motion).
-      filename: "StackVisualizer.tsx",
-      language: "tsx",
-      source: visualizerSource,
+      // Задача 2 с записью каждого шага.
+      filename: "dailyTemperaturesTrace.ts",
+      language: "typescript",
+      source: dailyTempTraceSource,
     },
     {
-      // Плеер: листает шаги вперёд/назад и автопроигрывает.
+      // Плеер: тумблер задач, листает шаги вперёд/назад, автопроигрывает.
       filename: "Demo.tsx",
       language: "tsx",
       source: demoSource,
