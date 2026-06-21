@@ -25,6 +25,7 @@ export default defineConfig({
         "./Intervals": "./src/patterns/intervals/index.ts",
         "./PrefixSum": "./src/patterns/prefix-sum/index.ts",
         "./BinarySearch": "./src/patterns/binary-search/index.ts",
+        "./Stack": "./src/patterns/stack/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {

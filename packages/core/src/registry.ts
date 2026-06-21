@@ -107,6 +107,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "algorithmic",
     exposedModule: "./BinarySearch",
   },
+  {
+    meta: {
+      id: "stack",
+      title: "Стек",
+      category: "algorithmic",
+      summary:
+        "LIFO-структура для задач на вложенность: открытые «(» ждут пару на стеке — удаляем минимум скобок для валидности за один проход O(n).",
+    },
+    remote: "algorithmic",
+    exposedModule: "./Stack",
+  },
 ];
 
 /**
