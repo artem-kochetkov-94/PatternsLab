@@ -74,6 +74,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "algorithmic",
     exposedModule: "./TwoPointers",
   },
+  {
+    meta: {
+      id: "intervals",
+      title: "Интервалы",
+      category: "algorithmic",
+      summary:
+        "Сортируем отрезки и проходим за один раз: метод точек (минимум переговорок) и слияние перекрытий в острова.",
+    },
+    remote: "algorithmic",
+    exposedModule: "./Intervals",
+  },
 ];
 
 /**

@@ -22,6 +22,7 @@ export default defineConfig({
       // что отдаём наружу: ключ — публичное имя, значение — путь в коде
       exposes: {
         "./TwoPointers": "./src/patterns/two-pointers/index.ts",
+        "./Intervals": "./src/patterns/intervals/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {
