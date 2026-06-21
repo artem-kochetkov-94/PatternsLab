@@ -24,6 +24,7 @@ export default defineConfig({
         "./TwoPointers": "./src/patterns/two-pointers/index.ts",
         "./Intervals": "./src/patterns/intervals/index.ts",
         "./PrefixSum": "./src/patterns/prefix-sum/index.ts",
+        "./BinarySearch": "./src/patterns/binary-search/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {

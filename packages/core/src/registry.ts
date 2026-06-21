@@ -96,6 +96,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "algorithmic",
     exposedModule: "./PrefixSum",
   },
+  {
+    meta: {
+      id: "binary-search",
+      title: "Бинарный поиск",
+      category: "algorithmic",
+      summary:
+        "Каждый шаг отбрасывает половину отсортированного массива — поиск за O(log n) вместо O(n).",
+    },
+    remote: "algorithmic",
+    exposedModule: "./BinarySearch",
+  },
 ];
 
 /**
