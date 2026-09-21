@@ -31,12 +31,12 @@
 └──────────────┬──────────────┘
                │ Module Federation (loadRemote)
    ┌───────────┴───────────────┐
-   ▼                           ▼
-┌─────────────────┐     ┌─────────────────┐
-│  behavioral     │ ... │  creational     │   remote-микрофронтенды
-│  (:3001)        │     │  (:300x)        │   по одному на категорию
-│  Observer, ...  │     │  Singleton, ... │
-└─────────────────┘     └─────────────────┘
+   ▼              ▼               ▼
+┌───────────┐ ┌───────────┐ ┌──────────────┐
+│ behavioral│ │algorithmic│ │architectural │   remote-микрофронтенды
+│ (:3001)   │ │ (:3002)   │ │  (:3003)     │   по одному на категорию
+│ Observer..│ │Two Point..│ │Load Balanc.. │
+└───────────┘ └───────────┘ └──────────────┘
 ```
 
 - **host** не знает о паттернах напрямую — он читает **реестр** (`packages/core`) и по
@@ -60,8 +60,10 @@ PatternsLab/
 │   └── patterns/
 │       ├── behavioral/           # remote с поведенческими паттернами (:3001)
 │       │   └── src/patterns/observer/   # Observer: логика + Demo + Explanation
-│       └── algorithmic/          # remote с алгоритмическими приёмами (:3002)
-│           └── src/patterns/two-pointers/  # Два указателя: трейсер + визуализация
+│       ├── algorithmic/          # remote с алгоритмическими приёмами (:3002)
+│       │   └── src/patterns/two-pointers/  # Два указателя: трейсер + визуализация
+│       └── architectural/        # remote с архитектурными паттернами (:3003)
+│           └── src/patterns/load-balancing/  # Балансировка: симуляция + SVG-диаграмма
 ├── packages/
 │   └── core/                     # контракты (PatternMeta, PatternModule) и реестр
 ├── pnpm-workspace.yaml
@@ -89,6 +91,7 @@ pnpm dev
 - host — http://localhost:3000
 - remote `behavioral` (автономный режим) — http://localhost:3001
 - remote `algorithmic` (автономный режим) — http://localhost:3002
+- remote `architectural` (автономный режим) — http://localhost:3003
 
 Для корректной загрузки паттернов в host соответствующий remote должен быть запущен.
 
@@ -98,6 +101,7 @@ pnpm dev
 pnpm --filter @patterns-lab/host dev
 pnpm --filter @patterns-lab/behavioral dev
 pnpm --filter @patterns-lab/algorithmic dev
+pnpm --filter @patterns-lab/architectural dev
 ```
 
 ## Скрипты
@@ -127,7 +131,12 @@ Host подхватит паттерн автоматически — отдел
 - [x] Module Federation: первый паттерн **Observer** (категория behavioral)
 - [x] Страница паттерна с вкладками «Разбор / Демо / Код» и подсветкой исходников
 - [x] Секция алгоритмических приёмов: **Два указателя** (Squares of a Sorted Array) с пошаговой визуализацией
+- [x] Секция архитектурных паттернов: **Балансировка нагрузки** (Round Robin / Weighted RR / Least Connections) с анимированной SVG-диаграммой
+- [x] Архитектурный паттерн **Кэширование** (Cache-Aside vs Cache-Through + LRU-вытеснение)
+- [x] Архитектурный паттерн **Reverse / Forward Proxy**
+- [x] Архитектурный паттерн **Circuit Breaker** (closed / open / half-open)
 - [ ] Остальные поведенческие паттерны (Strategy, Command, State, …)
-- [ ] Категории creational / structural / architectural
+- [ ] Остальные архитектурные паттерны (Монолит vs Микросервисы, Saga, …)
+- [ ] Категории creational / structural
 - [ ] Дизайн-система в `packages/ui`
 - [ ] Деплой

@@ -44,9 +44,10 @@ jobs:
         run: |
           mkdir -p _site
           cp -r apps/host/dist/. _site/
-          mkdir -p _site/behavioral _site/algorithmic
+          mkdir -p _site/behavioral _site/algorithmic _site/architectural
           cp -r apps/patterns/behavioral/dist/. _site/behavioral/
           cp -r apps/patterns/algorithmic/dist/. _site/algorithmic/
+          cp -r apps/patterns/architectural/dist/. _site/architectural/
           # SPA-fallback: на прямой переход вглубь Pages отдаёт 404.html,
           # копия index.html поднимает приложение и роутер сам отрисует путь.
           cp _site/index.html _site/404.html

@@ -129,6 +129,50 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "algorithmic",
     exposedModule: "./MergeSort",
   },
+  {
+    meta: {
+      id: "load-balancing",
+      title: "Балансировка нагрузки",
+      category: "architectural",
+      summary:
+        "Round Robin, Weighted Round Robin и Least Connections — как балансировщик распределяет запросы между инстансами и почему это не одно и то же.",
+    },
+    remote: "architectural",
+    exposedModule: "./LoadBalancing",
+  },
+  {
+    meta: {
+      id: "caching",
+      title: "Кэширование",
+      category: "architectural",
+      summary:
+        "Cache-Aside vs Cache-Through (Read/Write Through): кто ходит в БД — сервис сам или кэш за него. Плюс LRU-вытеснение при переполнении кэша.",
+    },
+    remote: "architectural",
+    exposedModule: "./Caching",
+  },
+  {
+    meta: {
+      id: "proxy",
+      title: "Reverse / Forward Proxy",
+      category: "architectural",
+      summary:
+        "Разница не в технологии, а в направлении: Forward Proxy скрывает клиента от сервера, Reverse Proxy скрывает сервер от клиента.",
+    },
+    remote: "architectural",
+    exposedModule: "./Proxy",
+  },
+  {
+    meta: {
+      id: "circuit-breaker",
+      title: "Circuit Breaker",
+      category: "architectural",
+      summary:
+        "Автомат closed/open/half-open, который перестаёт беспокоить упавший сервис бесполезными запросами и сам пробует его восстановление.",
+    },
+    remote: "architectural",
+    exposedModule: "./CircuitBreaker",
+  },
 ];
 
 /**

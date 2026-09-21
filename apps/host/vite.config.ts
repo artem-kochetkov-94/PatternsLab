@@ -37,6 +37,11 @@ export default defineConfig({
           name: "algorithmic",
           entry: remoteEntry("algorithmic", 3002),
         },
+        architectural: {
+          type: "module",
+          name: "architectural",
+          entry: remoteEntry("architectural", 3003),
+        },
       },
       shared: {
         react: { singleton: true },
