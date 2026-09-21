@@ -3,7 +3,7 @@ import { DEFAULT_REQUESTS, simulateCircuitBreaker } from "./circuitBreaker";
 import { CircuitBreakerDiagram, PACKET_LEG_DURATION } from "./CircuitBreakerDiagram";
 
 // Пауза после того, как пакет долетел, — чтобы успеть прочитать описание.
-const READ_PAUSE_MS = 1600;
+const READ_PAUSE_MS = 1100;
 
 const OUTCOME_LABEL: Record<string, string> = {
   success: "успех",

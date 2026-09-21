@@ -3,7 +3,7 @@ import { PROXY_MODES, getProxySteps, type ProxyMode } from "./scenarios";
 import { ProxyDiagram, PACKET_LEG_DURATION } from "./ProxyDiagram";
 
 // Пауза после того, как пакет долетел, — чтобы успеть прочитать описание.
-const READ_PAUSE_MS = 1800;
+const READ_PAUSE_MS = 1100;
 
 export function Demo() {
   const [mode, setMode] = useState<ProxyMode>("forward");

@@ -8,7 +8,7 @@ import {
 } from "./strategies";
 import { LoadBalancerDiagram } from "./LoadBalancerDiagram";
 
-const PLAY_INTERVAL = 4500;
+const PLAY_INTERVAL = 2800;
 
 export function Demo() {
   const [strategyId, setStrategyId] = useState<LbStrategyId>("round-robin");

@@ -1,44 +1,119 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { CACHE_CAPACITY, type CacheNodeId, type CacheStep } from "./strategies";
+import {
+  CACHE_CAPACITY,
+  type CacheLeg,
+  type CacheNodeId,
+  type CacheStep,
+} from "./strategies";
 
-// Как и в диаграмме балансировки — фиксированный "холст" вместо измерения
-// реальных DOM-координат: у нас всегда ровно три узла (Service/Cache/DB).
+// Треугольная раскладка вместо линейной: у Service—Cache—DB теперь три
+// РЕАЛЬНЫХ ребра (а не одно решётчатое + декоративная дуга-намёк). Cache-Aside
+// и Cache-Through буквально ходят по разным сторонам треугольника — это и
+// есть наглядная разница между стратегиями.
 const W = 640;
-const H = 220;
+const H = 260;
 
 const POS: Record<CacheNodeId, { x: number; y: number }> = {
-  service: { x: 80, y: 130 },
-  cache: { x: 320, y: 130 },
-  db: { x: 560, y: 130 },
+  service: { x: 110, y: 80 },
+  cache: { x: 530, y: 80 },
+  db: { x: 320, y: 220 },
 };
 
 const BOX_W = 130;
 const BOX_H = 56;
 
-/** Сколько секунд пакет летит через ОДИН перегон — используется и плеером
- * (Demo.tsx), чтобы автопрокрутка не переключала шаг раньше, чем долетит
- * анимация. */
-export const PACKET_LEG_DURATION = 1.6;
+/** Сколько секунд длится импульс на ОДНОМ перегоне — используется и плеером
+ * (Demo.tsx), чтобы автопрокрутка не переключала шаг раньше, чем все импульсы
+ * шага доиграют. */
+export const PACKET_LEG_DURATION = 1.1;
 
 function rectAt(center: { x: number; y: number }) {
   return { x: center.x - BOX_W / 2, y: center.y - BOX_H / 2 };
 }
 
-/** Собирает keyframes для "пакета", последовательно проходящего все перегоны шага. */
-function buildPacketKeyframes(legs: [CacheNodeId, CacheNodeId][]) {
-  const cx: number[] = [];
-  const cy: number[] = [];
-  for (const [from, to] of legs) {
-    cx.push(POS[from].x, POS[to].x);
-    cy.push(POS[from].y, POS[to].y);
-  }
-  const opacity = cx.map((_, i) => (i === 0 || i === cx.length - 1 ? 0 : 1));
-  return { cx, cy, opacity };
+/**
+ * Каждый перегон — свой независимый импульс, стартующий заново в точке
+ * "from". Раньше все перегоны шага соединялись в одно движение, и для
+ * несмежных перегонов (service→cache, затем ОПЯТЬ service→db) кружок
+ * визуально прыгал через холст. Отдельные импульсы с задержкой друг за
+ * другом полностью убирают прыжки — независимо от того, смежные перегоны
+ * или нет.
+ *
+ * Внутри READ-перегона — не один бросок, а полный цикл запрос/ответ: первая
+ * половина времени запрос летит к цели (индиго), вторая половина — ответ С
+ * ДАННЫМИ летит обратно (голубой) — уместно, когда адресат УЖЕ знает ответ
+ * (например, у БД он есть всегда).
+ *
+ * WRITE и REQUEST едут только вперёд одним импульсом (индиго) — отвечать
+ * пока нечем: при записи в принципе нет ответа, а при REQUEST адресат сам
+ * ещё не знает результат (кэш при промахе сначала должен сходить в БД).
+ *
+ * RESPONSE — тоже один импульс, но голубой и в обратную сторону: это
+ * доставка результата, добытого ЧЕРЕЗ ДРУГОЙ перегон раньше (кэш относит
+ * сервису то, что только что получил из БД). Без него получилось бы, что
+ * кэш сходил в БД — и данные никуда не делись.
+ */
+function LegPulses({ legs, eventKey }: { legs: CacheLeg[]; eventKey: string }) {
+  const half = PACKET_LEG_DURATION / 2;
+  return (
+    <>
+      {legs.map((leg, i) => {
+        const a = POS[leg.from];
+        const b = POS[leg.to];
+        const legStart = i * PACKET_LEG_DURATION;
+
+        if (leg.kind === "read") {
+          return (
+            <g key={`${eventKey}-leg-${i}`}>
+              {/* Запрос: from → to. */}
+              <motion.circle
+                r={7}
+                fill="rgb(99 102 241)"
+                initial={{ cx: a.x, cy: a.y, opacity: 0 }}
+                animate={{ cx: [a.x, b.x], cy: [a.y, b.y], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: half, delay: legStart, ease: "easeInOut" }}
+              />
+              {/* Ответ с данными: to → from. */}
+              <motion.circle
+                r={6}
+                fill="rgb(56 189 248)"
+                initial={{ cx: b.x, cy: b.y, opacity: 0 }}
+                animate={{ cx: [b.x, a.x], cy: [b.y, a.y], opacity: [0, 1, 1, 0] }}
+                transition={{
+                  duration: half,
+                  delay: legStart + half,
+                  ease: "easeInOut",
+                }}
+              />
+            </g>
+          );
+        }
+
+        // write / request — индиго, одним impульсом вперёд.
+        // response — голубой (как "ответ" у read), тоже одним импульсом, но
+        // это отдельный самостоятельный перегон, а не вторая половина read.
+        const fill = leg.kind === "response" ? "rgb(56 189 248)" : "rgb(99 102 241)";
+        return (
+          <motion.circle
+            key={`${eventKey}-leg-${i}`}
+            r={7}
+            fill={fill}
+            initial={{ cx: a.x, cy: a.y, opacity: 0 }}
+            animate={{ cx: [a.x, b.x], cy: [a.y, b.y], opacity: [0, 1, 1, 0] }}
+            transition={{
+              duration: PACKET_LEG_DURATION,
+              delay: legStart,
+              ease: "easeInOut",
+            }}
+          />
+        );
+      })}
+    </>
+  );
 }
 
 export function CacheDiagram({ step }: { step: CacheStep }) {
-  const packet = buildPacketKeyframes(step.legs);
-  const touched = new Set(step.legs.flat());
+  const touched = new Set(step.legs.flatMap((leg) => [leg.from, leg.to]));
   const eventKey = `${step.id}-${step.op}`;
   const cacheFlash = step.hit ? "sky" : "amber";
 
@@ -50,48 +125,33 @@ export function CacheDiagram({ step }: { step: CacheStep }) {
         role="img"
         aria-label="Схема прохождения запроса через кэш"
       >
-        {/* Service — Cache. */}
+        {/* Три реальных ребра треугольника — все одинаковым сплошным стилем. */}
         <line
-          x1={POS.service.x + BOX_W / 2}
+          x1={POS.service.x}
           y1={POS.service.y}
-          x2={POS.cache.x - BOX_W / 2}
+          x2={POS.cache.x}
           y2={POS.cache.y}
           stroke="rgb(51 65 85)"
           strokeWidth={2}
         />
-        {/* Cache — DB. */}
         <line
-          x1={POS.cache.x + BOX_W / 2}
+          x1={POS.cache.x}
           y1={POS.cache.y}
-          x2={POS.db.x - BOX_W / 2}
+          x2={POS.db.x}
           y2={POS.db.y}
           stroke="rgb(51 65 85)"
           strokeWidth={2}
         />
-        {/* Service — DB напрямую: используется только Cache-Aside, поэтому
-            всегда рисуем её приглушённой пунктирной линией дугой сверху —
-            видно, что путь ЕСТЬ, но ходят по нему не всегда. */}
-        <path
-          d={`M ${POS.service.x} ${POS.service.y - BOX_H / 2} Q ${W / 2} 10 ${POS.db.x} ${POS.db.y - BOX_H / 2}`}
-          fill="none"
+        <line
+          x1={POS.service.x}
+          y1={POS.service.y}
+          x2={POS.db.x}
+          y2={POS.db.y}
           stroke="rgb(51 65 85)"
-          strokeWidth={1.5}
-          strokeDasharray="4 4"
-          opacity={0.6}
+          strokeWidth={2}
         />
 
-        {/* Бегущий пакет — проходит все перегоны текущего шага подряд. */}
-        <motion.circle
-          key={`packet-${eventKey}`}
-          r={7}
-          fill="rgb(99 102 241)"
-          initial={{ cx: packet.cx[0], cy: packet.cy[0], opacity: 0 }}
-          animate={{ cx: packet.cx, cy: packet.cy, opacity: packet.opacity }}
-          transition={{
-            duration: PACKET_LEG_DURATION * step.legs.length,
-            ease: "easeInOut",
-          }}
-        />
+        <LegPulses legs={step.legs} eventKey={eventKey} />
 
         <DiagramNode
           rect={rectAt(POS.service)}

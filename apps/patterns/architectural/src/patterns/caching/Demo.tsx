@@ -8,7 +8,7 @@ import {
 import { CacheDiagram, PACKET_LEG_DURATION } from "./CacheDiagram";
 
 // Пауза после того, как пакет долетел, — чтобы успеть прочитать описание.
-const READ_PAUSE_MS = 1800;
+const READ_PAUSE_MS = 1100;
 
 export function Demo() {
   const [strategyId, setStrategyId] = useState<CacheStrategyId>("cache-aside");

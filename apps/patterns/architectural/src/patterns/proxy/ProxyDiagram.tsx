@@ -22,7 +22,7 @@ const BOX_W = 130;
 const BOX_H = 56;
 
 /** Сколько секунд пакет летит через ОДИН перегон — и для Demo.tsx тоже. */
-export const PACKET_LEG_DURATION = 1.6;
+export const PACKET_LEG_DURATION = 1.1;
 
 function rectAt(center: { x: number; y: number }) {
   return { x: center.x - BOX_W / 2, y: center.y - BOX_H / 2 };

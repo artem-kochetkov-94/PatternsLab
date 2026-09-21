@@ -49,14 +49,32 @@ export const DEFAULT_CACHE_TIMELINE: CacheOpDef[] = [
   { id: 8, op: "get", key: "user:2" },
 ];
 
+/**
+ * Один "перегон" маршрута:
+ *  - read     — полноценный круговой обмен: запрос летит туда, ответ с
+ *               данными сразу же летит обратно (адресат уже знает ответ).
+ *  - write    — данные едут только вперёд, отвечать нечем.
+ *  - request  — вопрос летит вперёд, но ответа СРАЗУ не будет: адресат сам
+ *               ещё не знает ответа (например, кэш при промахе).
+ *  - response — ответ с данными едет вперёд САМ ПО СЕБЕ, без парного запроса
+ *               в этом же перегоне, — доставка результата, добытого раньше
+ *               через другой узел (например, кэш относит сервису то, что
+ *               перед этим получил из БД).
+ */
+export interface CacheLeg {
+  from: CacheNodeId;
+  to: CacheNodeId;
+  kind: "read" | "write" | "request" | "response";
+}
+
 /** Один кадр симуляции: один операция (GET/SET) целиком, с маршрутом. */
 export interface CacheStep {
   id: number;
   op: "get" | "set";
   key: string;
   hit: boolean;
-  /** Маршрут запроса как последовательность "перегонов" service/cache/db. */
-  legs: [CacheNodeId, CacheNodeId][];
+  /** Маршрут запроса как последовательность перегонов service/cache/db. */
+  legs: CacheLeg[];
   /** Содержимое кэша ПОСЛЕ операции, от недавно использованного к давнему. */
   cacheEntries: string[];
   evictedKey: string | null;
@@ -90,15 +108,16 @@ export function simulateCaching(
   const steps: CacheStep[] = [];
 
   for (const opDef of ops) {
-    const legs: [CacheNodeId, CacheNodeId][] = [];
+    const legs: CacheLeg[] = [];
     let evictedKey: string | null = null;
     let description: string;
 
     if (opDef.op === "get") {
       const hit = cacheOrder.includes(opDef.key);
-      legs.push(["service", "cache"]);
 
       if (hit) {
+        // Кэш отвечает сразу — обычный круговой обмен "спросил → получил".
+        legs.push({ from: "service", to: "cache", kind: "read" });
         touch(opDef.key);
         description =
           strategyId === "cache-aside"
@@ -106,10 +125,20 @@ export function simulateCaching(
             : `GET ${opDef.key}: попадание — кэш отдал значение сам, сервис про БД даже не знает.`;
       } else {
         if (strategyId === "cache-aside") {
-          legs.push(["service", "db"]);
-          legs.push(["service", "cache"]);
+          // Кэш сразу отвечает "нет" (свой круговой обмен) — и сервис САМ идёт в БД.
+          legs.push({ from: "service", to: "cache", kind: "read" });
+          legs.push({ from: "service", to: "db", kind: "read" });
+          // Сервис сам кладёт найденное значение в кэш — это запись, ответа с данными тут не будет.
+          legs.push({ from: "service", to: "cache", kind: "write" });
         } else {
-          legs.push(["cache", "db"]);
+          // Cache-Through: сервис спрашивает кэш и ЖДЁТ — ответа сразу нет,
+          // потому что кэш ещё не знает ответа. Кэш сам идёт в БД (свой
+          // круговой обмен), и только получив данные — относит их сервису
+          // отдельным перегоном. Без этого последнего перегона выглядело бы
+          // так, будто кэш сходил в БД и данные испарились.
+          legs.push({ from: "service", to: "cache", kind: "request" });
+          legs.push({ from: "cache", to: "db", kind: "read" });
+          legs.push({ from: "cache", to: "service", kind: "response" });
         }
         const value = db.get(opDef.key) ?? `значение(${opDef.key})`;
         db.set(opDef.key, value);
@@ -118,7 +147,7 @@ export function simulateCaching(
         description =
           (strategyId === "cache-aside"
             ? `GET ${opDef.key}: промах — сервис сам читает БД и сам кладёт результат в кэш.`
-            : `GET ${opDef.key}: промах — кэш сам сходил в БД и сохранил результат.`) +
+            : `GET ${opDef.key}: промах — кэш сам сходил в БД и принёс результат сервису.`) +
           (evictedKey ? ` Кэш переполнен, вытеснили «${evictedKey}» (LRU).` : "");
       }
 
@@ -135,14 +164,14 @@ export function simulateCaching(
       continue;
     }
 
-    // SET
+    // SET — оба перегона это запись: данные едут только вперёд, читать тут нечего.
     const value = opDef.value ?? `значение(${opDef.key})`;
     if (strategyId === "cache-aside") {
-      legs.push(["service", "db"]);
-      legs.push(["service", "cache"]);
+      legs.push({ from: "service", to: "db", kind: "write" });
+      legs.push({ from: "service", to: "cache", kind: "write" });
     } else {
-      legs.push(["service", "cache"]);
-      legs.push(["cache", "db"]);
+      legs.push({ from: "service", to: "cache", kind: "write" });
+      legs.push({ from: "cache", to: "db", kind: "write" });
     }
     db.set(opDef.key, value);
     touch(opDef.key);

@@ -86,7 +86,7 @@ export function LoadBalancerDiagram({
               cy: [CLIENT.y, LB.y, LB.y, activeInstancePos.y],
               opacity: [0, 1, 1, 0],
             }}
-            transition={{ duration: 3.5, ease: "easeInOut" }}
+            transition={{ duration: 2.2, ease: "easeInOut" }}
           />
         )}
 
