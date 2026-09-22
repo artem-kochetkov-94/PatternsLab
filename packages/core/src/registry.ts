@@ -173,6 +173,83 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "architectural",
     exposedModule: "./CircuitBreaker",
   },
+  {
+    meta: {
+      id: "isolation-levels",
+      title: "Уровни изоляции транзакций",
+      category: "architectural",
+      summary:
+        "Грязное чтение, неповторяющееся чтение, фантомы и потерянное обновление — какие из этих аномалий закрывает каждый уровень изоляции, на примере двух конкурентных транзакций.",
+    },
+    remote: "architectural",
+    exposedModule: "./IsolationLevels",
+  },
+  {
+    meta: {
+      id: "message-brokers",
+      title: "Брокеры сообщений",
+      category: "architectural",
+      summary:
+        "Kafka (pull, consumer сам забирает из лога партиции) vs RabbitMQ (push, брокер сам толкает сообщение в consumer'а) — разница в том, кто инициирует доставку.",
+    },
+    remote: "architectural",
+    exposedModule: "./MessageBrokers",
+  },
+  {
+    meta: {
+      id: "database-classes",
+      title: "Классы баз данных",
+      category: "architectural",
+      summary:
+        "OLTP / OLAP / HTAP и Persistent / In-memory — две независимые оси классификации поверх «вида» БД. Формат — классификация сценариев, а не поток запросов.",
+    },
+    remote: "architectural",
+    exposedModule: "./DatabaseClasses",
+  },
+  {
+    meta: {
+      id: "database-types",
+      title: "Виды баз данных",
+      category: "architectural",
+      summary:
+        "Реляционные, документные, графовые, key-value, колоночные, time series, blob store — семь моделей хранения и к какому сценарию какая реально подходит.",
+    },
+    remote: "architectural",
+    exposedModule: "./DatabaseTypes",
+  },
+  {
+    meta: {
+      id: "db-indexes",
+      title: "Индексы",
+      category: "architectural",
+      summary:
+        "BTree, Hash, Bitmap, Spatial, Reversed — пять типов индексов и к какому характеру запроса какой реально подходит.",
+    },
+    remote: "architectural",
+    exposedModule: "./DbIndexes",
+  },
+  {
+    meta: {
+      id: "distributed-tracing",
+      title: "Observability: распределённый трейсинг",
+      category: "architectural",
+      summary:
+        "Один запрос — дерево вложенных спанов с началом и длительностью. Waterfall-диаграмма (как в Jaeger) сразу показывает, какой из параллельных вызовов реально определяет итоговую задержку.",
+    },
+    remote: "architectural",
+    exposedModule: "./DistributedTracing",
+  },
+  {
+    meta: {
+      id: "api-styles",
+      title: "Типы API: REST vs GraphQL",
+      category: "architectural",
+      summary:
+        "Одна и та же задача — получить пользователя и заголовки его постов — двумя способами: REST (несколько запросов, over-fetching) и GraphQL (один запрос, точные поля).",
+    },
+    remote: "architectural",
+    exposedModule: "./ApiStyles",
+  },
 ];
 
 /**

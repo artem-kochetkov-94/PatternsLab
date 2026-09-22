@@ -25,6 +25,13 @@ export default defineConfig({
         "./Caching": "./src/patterns/caching/index.ts",
         "./Proxy": "./src/patterns/proxy/index.ts",
         "./CircuitBreaker": "./src/patterns/circuit-breaker/index.ts",
+        "./IsolationLevels": "./src/patterns/isolation-levels/index.ts",
+        "./MessageBrokers": "./src/patterns/message-brokers/index.ts",
+        "./DatabaseClasses": "./src/patterns/database-classes/index.ts",
+        "./DatabaseTypes": "./src/patterns/database-types/index.ts",
+        "./DbIndexes": "./src/patterns/db-indexes/index.ts",
+        "./DistributedTracing": "./src/patterns/distributed-tracing/index.ts",
+        "./ApiStyles": "./src/patterns/api-styles/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {
