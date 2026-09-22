@@ -32,6 +32,10 @@ export default defineConfig({
         "./DbIndexes": "./src/patterns/db-indexes/index.ts",
         "./DistributedTracing": "./src/patterns/distributed-tracing/index.ts",
         "./ApiStyles": "./src/patterns/api-styles/index.ts",
+        "./ReplicationTopologies": "./src/patterns/replication-topologies/index.ts",
+        "./ReplicationConsistency": "./src/patterns/replication-consistency/index.ts",
+        "./CapTheorem": "./src/patterns/cap-theorem/index.ts",
+        "./Sharding": "./src/patterns/sharding/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {

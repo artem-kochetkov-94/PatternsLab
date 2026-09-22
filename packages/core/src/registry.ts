@@ -250,6 +250,50 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "architectural",
     exposedModule: "./ApiStyles",
   },
+  {
+    meta: {
+      id: "replication-topologies",
+      title: "Репликация: топологии",
+      category: "architectural",
+      summary:
+        "Master-Slave, Master-Master, Master-less — кто пишет, кто читает и что происходит с записью, когда узел падает.",
+    },
+    remote: "architectural",
+    exposedModule: "./ReplicationTopologies",
+  },
+  {
+    meta: {
+      id: "replication-consistency",
+      title: "Репликация: синхронность и согласованность",
+      category: "architectural",
+      summary:
+        "Sync / async / semisync / lose-less semisync — в какой момент клиент получает ACK. Плюс модели консистентности: strong, eventual, read-your-writes, monotonic reads, consistent prefix.",
+    },
+    remote: "architectural",
+    exposedModule: "./ReplicationConsistency",
+  },
+  {
+    meta: {
+      id: "cap-theorem",
+      title: "CAP-теорема",
+      category: "architectural",
+      summary:
+        "Разорви связь между узлами, выбери CP или AP и попробуй прочитать с отрезанного узла — теорема не про формулу, а про то, чем жертвовать во время разрыва сети.",
+    },
+    remote: "architectural",
+    exposedModule: "./CapTheorem",
+  },
+  {
+    meta: {
+      id: "sharding",
+      title: "Шардирование",
+      category: "architectural",
+      summary:
+        "Range/key/directory-based — три независимых способа выбрать шард. Плюс главный контраст: hash % N перемешивает почти всё при решардинге, consistent hashing — только соседей изменённого узла.",
+    },
+    remote: "architectural",
+    exposedModule: "./Sharding",
+  },
 ];
 
 /**

@@ -142,6 +142,10 @@ Host подхватит паттерн автоматически — отдел
 - [x] Архитектурный паттерн **Индексы** (BTree/Hash/Bitmap/Spatial/Reversed)
 - [x] Архитектурный паттерн **Observability: распределённый трейсинг** (waterfall-диаграмма спанов)
 - [x] Архитектурный паттерн **Типы API: REST vs GraphQL** (over-fetching)
+- [x] Архитектурный паттерн **Репликация: топологии** (Master-Slave / Master-Master / Master-less, failover, split brain, конфликты)
+- [x] Архитектурный паттерн **Репликация: синхронность и согласованность** (sync/async/semisync/lose-less semisync + модели консистентности)
+- [x] Архитектурный паттерн **CAP-теорема** (интерактивный разрыв связи, CP vs AP)
+- [x] Архитектурный паттерн **Шардирование** (range/key/directory-based, hash % N vs consistent hashing)
 - [ ] Остальные поведенческие паттерны (Strategy, Command, State, …)
 - [ ] Остальные архитектурные паттерны (Монолит vs Микросервисы, Saga, …)
 - [ ] Категории creational / structural
