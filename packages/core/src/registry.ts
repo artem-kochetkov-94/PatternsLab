@@ -305,6 +305,138 @@ export const patternRegistry: PatternRegistryEntry[] = [
     remote: "architectural",
     exposedModule: "./Sharding",
   },
+  {
+    meta: {
+      id: "release-strategies",
+      title: "Стратегии релизов",
+      category: "architectural",
+      summary:
+        "Rolling / Blue-Green / Canary — что происходит с трафиком, пока новая версия раскатывается, и чем платим за скорость или безопасность выкатки.",
+    },
+    remote: "architectural",
+    exposedModule: "./ReleaseStrategies",
+  },
+  {
+    meta: {
+      id: "microservice-patterns",
+      title: "Паттерны коммуникации микросервисов",
+      category: "architectural",
+      summary:
+        "Агрегатор (параллельно), Цепочка (последовательно), событийно-ориентированная (Event Notification / State Transfer / Event Collaboration) и отложенное выполнение задач через очередь.",
+    },
+    remote: "architectural",
+    exposedModule: "./MicroservicePatterns",
+  },
+  {
+    meta: {
+      id: "resilience",
+      title: "Устойчивость к сбоям",
+      category: "architectural",
+      summary:
+        "Retries + идемпотентность + backoff, backpressure и graceful degradation / fallback — три способа не дать одному сбойному участку положить всю систему.",
+    },
+    remote: "architectural",
+    exposedModule: "./Resilience",
+  },
+  {
+    meta: {
+      id: "service-discovery",
+      title: "Service Discovery и Heartbeat",
+      category: "architectural",
+      summary:
+        "Как LB узнаёт о новых бэкендах (регистрация) и о падении старых (пропущенный heartbeat) без ручного редактирования конфига.",
+    },
+    remote: "architectural",
+    exposedModule: "./ServiceDiscovery",
+  },
+  {
+    meta: {
+      id: "cqrs",
+      title: "CQRS",
+      category: "architectural",
+      summary:
+        "Command Query Responsibility Segregation: разделяем запись и чтение на разные сервисы, чтобы масштабировать и оптимизировать их независимо друг от друга.",
+    },
+    remote: "architectural",
+    exposedModule: "./Cqrs",
+  },
+  {
+    meta: {
+      id: "realtime-updates",
+      title: "Реалтайм-обновления",
+      category: "architectural",
+      summary:
+        "Polling / Long Polling / Streaming — три способа узнать об изменениях на сервере, отличающиеся тем, кто и когда инициирует передачу данных.",
+    },
+    remote: "architectural",
+    exposedModule: "./RealtimeUpdates",
+  },
+  {
+    meta: {
+      id: "map-reduce",
+      title: "MapReduce",
+      category: "architectural",
+      summary:
+        "Word count пошагово: Cut → Map → Shuffle → Reduce. Как задача обработки текста разбивается на независимо параллелящиеся фазы.",
+    },
+    remote: "architectural",
+    exposedModule: "./MapReduce",
+  },
+  {
+    meta: {
+      id: "autocomplete-trie",
+      title: "Автодополнение: Trie",
+      category: "architectural",
+      summary:
+        "Сжатое префиксное дерево (radix tree) с частотами на листьях — вводишь префикс, видишь путь по дереву и подсказки, отсортированные по популярности.",
+    },
+    remote: "architectural",
+    exposedModule: "./AutocompleteTrie",
+  },
+  {
+    meta: {
+      id: "throttling-debouncing",
+      title: "Throttling / Debouncing",
+      category: "architectural",
+      summary:
+        "Кликай быстро подряд и смотри вживую: throttle реагирует равномерно по ходу серии событий, debounce — только один раз, после того как события прекратились.",
+    },
+    remote: "architectural",
+    exposedModule: "./ThrottlingDebouncing",
+  },
+  {
+    meta: {
+      id: "distributed-transactions",
+      title: "Консенсус: распределённые транзакции",
+      category: "architectural",
+      summary:
+        "2PC (Prepare/Commit, с сценарием сбоя), Saga (локальные транзакции + компенсация вместо отката) и Transaction Outbox (атомарная запись в БД + надёжная публикация в очередь).",
+    },
+    remote: "architectural",
+    exposedModule: "./DistributedTransactions",
+  },
+  {
+    meta: {
+      id: "locks-leader-election",
+      title: "Консенсус: блокировки и выбор лидера",
+      category: "architectural",
+      summary:
+        "Redis SET NX PX против гонки за блокировку + Bully algorithm: как узлы сами выбирают нового лидера без внешнего арбитра, когда прежний пропал.",
+    },
+    remote: "architectural",
+    exposedModule: "./LocksLeaderElection",
+  },
+  {
+    meta: {
+      id: "requirements",
+      title: "Функциональные vs нефункциональные требования",
+      category: "architectural",
+      summary:
+        "ЧТО система должна делать (функциональные) против КАКИМИ свойствами она должна обладать (нефункциональные) — квиз по восьми сценариям.",
+    },
+    remote: "architectural",
+    exposedModule: "./Requirements",
+  },
 ];
 
 /**

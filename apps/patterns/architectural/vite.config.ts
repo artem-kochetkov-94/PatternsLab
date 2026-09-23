@@ -37,6 +37,18 @@ export default defineConfig({
         "./ReplicationTransferFormat": "./src/patterns/replication-transfer-format/index.ts",
         "./CapTheorem": "./src/patterns/cap-theorem/index.ts",
         "./Sharding": "./src/patterns/sharding/index.ts",
+        "./ReleaseStrategies": "./src/patterns/release-strategies/index.ts",
+        "./MicroservicePatterns": "./src/patterns/microservice-patterns/index.ts",
+        "./Resilience": "./src/patterns/resilience/index.ts",
+        "./ServiceDiscovery": "./src/patterns/service-discovery/index.ts",
+        "./Cqrs": "./src/patterns/cqrs/index.ts",
+        "./RealtimeUpdates": "./src/patterns/realtime-updates/index.ts",
+        "./MapReduce": "./src/patterns/map-reduce/index.ts",
+        "./AutocompleteTrie": "./src/patterns/autocomplete-trie/index.ts",
+        "./ThrottlingDebouncing": "./src/patterns/throttling-debouncing/index.ts",
+        "./DistributedTransactions": "./src/patterns/distributed-transactions/index.ts",
+        "./LocksLeaderElection": "./src/patterns/locks-leader-election/index.ts",
+        "./Requirements": "./src/patterns/requirements/index.ts",
       },
       // общие библиотеки: один экземпляр на host и все remote
       shared: {
