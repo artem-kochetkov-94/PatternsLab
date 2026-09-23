@@ -274,6 +274,17 @@ export const patternRegistry: PatternRegistryEntry[] = [
   },
   {
     meta: {
+      id: "replication-transfer-format",
+      title: "Репликация: формат передачи данных",
+      category: "architectural",
+      summary:
+        "Push vs pull (кто инициирует), statement-based vs row-based vs mixed (что едет по сети), логическая vs физическая (на каком уровне) — три независимых оси того, как изменение физически доезжает до реплики.",
+    },
+    remote: "architectural",
+    exposedModule: "./ReplicationTransferFormat",
+  },
+  {
+    meta: {
       id: "cap-theorem",
       title: "CAP-теорема",
       category: "architectural",

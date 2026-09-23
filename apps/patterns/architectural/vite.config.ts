@@ -34,6 +34,7 @@ export default defineConfig({
         "./ApiStyles": "./src/patterns/api-styles/index.ts",
         "./ReplicationTopologies": "./src/patterns/replication-topologies/index.ts",
         "./ReplicationConsistency": "./src/patterns/replication-consistency/index.ts",
+        "./ReplicationTransferFormat": "./src/patterns/replication-transfer-format/index.ts",
         "./CapTheorem": "./src/patterns/cap-theorem/index.ts",
         "./Sharding": "./src/patterns/sharding/index.ts",
       },
