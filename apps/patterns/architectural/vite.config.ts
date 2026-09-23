@@ -3,15 +3,20 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { federation } from "@module-federation/vite";
 
-// На GitHub Pages этот remote лежит в подпапке /PatternsLab/architectural/,
-// поэтому его статика (remoteEntry.js и чанки) должна ссылаться туда же.
-const isPages = process.env.DEPLOY_TARGET === "pages";
+// Два продовых адреса: "pages" — проектная страница /PatternsLab/architectural/,
+// "userpage" — корень пользовательского сайта, /architectural/.
+const deployTarget = process.env.DEPLOY_TARGET;
 
 // Remote-приложение "architectural": архитектурные паттерны и подходы
 // (балансировка нагрузки, кэширование, проксирование и т.д.), отдаёт их
 // наружу через Module Federation.
 export default defineConfig({
-  base: isPages ? "/PatternsLab/architectural/" : "/",
+  base:
+    deployTarget === "pages"
+      ? "/PatternsLab/architectural/"
+      : deployTarget === "userpage"
+        ? "/architectural/"
+        : "/",
   plugins: [
     react(),
     tailwindcss(),

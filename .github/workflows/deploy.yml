@@ -65,3 +65,44 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Зеркало на корне пользовательского сайта (artem-kochetkov-94.github.io) —
+  # отдельная сборка с другими base-путями, публикуется в отдельный репозиторий.
+  deploy-userpage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+        env:
+          DEPLOY_TARGET: userpage
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site_userpage
+          cp -r apps/host/dist/. _site_userpage/
+          mkdir -p _site_userpage/behavioral _site_userpage/algorithmic _site_userpage/architectural
+          cp -r apps/patterns/behavioral/dist/. _site_userpage/behavioral/
+          cp -r apps/patterns/algorithmic/dist/. _site_userpage/algorithmic/
+          cp -r apps/patterns/architectural/dist/. _site_userpage/architectural/
+          cp _site_userpage/index.html _site_userpage/404.html
+
+      - name: Publish to artem-kochetkov-94.github.io
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.USERPAGE_DEPLOY_TOKEN }}
+          external_repository: artem-kochetkov-94/artem-kochetkov-94.github.io
+          publish_branch: master
+          publish_dir: _site_userpage
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: "deploy: PatternsLab @ ${{ github.sha }}"

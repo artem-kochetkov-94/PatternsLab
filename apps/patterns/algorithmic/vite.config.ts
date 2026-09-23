@@ -3,15 +3,20 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { federation } from "@module-federation/vite";
 
-// На GitHub Pages этот remote лежит в подпапке /PatternsLab/algorithmic/,
-// поэтому его статика (remoteEntry.js и чанки) должна ссылаться туда же.
-const isPages = process.env.DEPLOY_TARGET === "pages";
+// Два продовых адреса: "pages" — проектная страница /PatternsLab/algorithmic/,
+// "userpage" — корень пользовательского сайта, /algorithmic/.
+const deployTarget = process.env.DEPLOY_TARGET;
 
 // Remote-приложение "algorithmic": содержит алгоритмические приёмы
 // (два указателя, скользящее окно и т.д.) и отдаёт их наружу через
 // Module Federation.
 export default defineConfig({
-  base: isPages ? "/PatternsLab/algorithmic/" : "/",
+  base:
+    deployTarget === "pages"
+      ? "/PatternsLab/algorithmic/"
+      : deployTarget === "userpage"
+        ? "/algorithmic/"
+        : "/",
   plugins: [
     react(),
     tailwindcss(),

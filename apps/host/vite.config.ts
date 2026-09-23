@@ -3,22 +3,25 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { federation } from "@module-federation/vite";
 
-// Сборка под GitHub Pages включается переменной DEPLOY_TARGET=pages.
-// Тогда всё приложение живёт по адресу <user>.github.io/PatternsLab/,
-// а remote-ы лежат в подпапках того же сайта.
-const isPages = process.env.DEPLOY_TARGET === "pages";
+// Два продовых адреса, включаются переменной DEPLOY_TARGET:
+//  - "pages"    — проектная страница, <user>.github.io/PatternsLab/;
+//  - "userpage" — корень пользовательского сайта, <user>.github.io/.
+// В обоих случаях remote-ы лежат в подпапках того же сайта.
+const deployTarget = process.env.DEPLOY_TARGET;
 const PAGES_ORIGIN = "https://artem-kochetkov-94.github.io/PatternsLab";
+const USERPAGE_ORIGIN = "https://artem-kochetkov-94.github.io";
 
-// Где host берёт remote-ы: в проде — статикой с Pages, в dev — с localhost.
-const remoteEntry = (name: string, devPort: number) =>
-  isPages
-    ? `${PAGES_ORIGIN}/${name}/remoteEntry.js`
-    : `http://localhost:${devPort}/remoteEntry.js`;
+// Где host берёт remote-ы: в проде — статикой с нужного сайта, в dev — с localhost.
+const remoteEntry = (name: string, devPort: number) => {
+  if (deployTarget === "pages") return `${PAGES_ORIGIN}/${name}/remoteEntry.js`;
+  if (deployTarget === "userpage") return `${USERPAGE_ORIGIN}/${name}/remoteEntry.js`;
+  return `http://localhost:${devPort}/remoteEntry.js`;
+};
 
 // Конфигурация сборщика Vite для host-приложения.
 export default defineConfig({
-  // На Pages сайт отдаётся из /PatternsLab/, локально — из корня.
-  base: isPages ? "/PatternsLab/" : "/",
+  // На "pages" сайт отдаётся из /PatternsLab/, на "userpage" и локально — из корня.
+  base: deployTarget === "pages" ? "/PatternsLab/" : "/",
   plugins: [
     react(),
     tailwindcss(),
